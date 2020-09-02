@@ -2,8 +2,6 @@ package rail_il;
 
 import java.time.LocalTime;
 
-import rail_il.Station.eType;
-
 public class Ride {
 
 	private Station[] allStations;
@@ -26,7 +24,7 @@ public class Ride {
 		return allStations;
 	}
 	
-	public void addStation(String name, LocalTime time, eType stationType){
+	public void addStation(String name, LocalTime time, Station.eType stationType){
 		
 		allStations[numOfStations++] = new Station(name, time, stationType);
 		
@@ -70,7 +68,7 @@ public class Ride {
 		sb.append("Departure Station" + departureStation.toString());
 		for(int i = 1 ; i < numOfStations - 1 ; i++)
 			sb.append("\nstop #" + i + "\t\t" + allStations[i].toString());
-		sb.append("\nDestination Station" + destinationStation.toString());
+		sb.append("\nDestination Station" + destinationStation.toString() + "-->(Arrival Time)");
 		return sb.toString();
 	}
 }

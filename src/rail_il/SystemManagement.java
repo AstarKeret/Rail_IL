@@ -2,7 +2,6 @@ package rail_il;
 
 import java.time.LocalTime;
 
-import rail_il.Station.eType;
 
 public class SystemManagement {
 	public static enum eReason{BEFORE_DEPARTURE_TIME, AFTER_DESTINATION_TIME, SAME_TIME_AS_DESTINATION, SAME_TIME_AS_DEPARTURE, SAME_TIME_AS_ANOTHER_INTERMEDIATE,  OK};
@@ -16,8 +15,8 @@ public class SystemManagement {
 		}
 
 	public void addRide(String departureStation, String departureTime, String destinationStation, String destinationTime, int numOfStations) {
-		Station departure = new Station(departureStation, LocalTime.parse(departureTime), eType.DEPARTURE);				//creates a new station--> departure
-		Station destination = new Station(destinationStation, LocalTime.parse(destinationTime), eType.DESTINATION);		//creates a new station--> destination
+		Station departure = new Station(departureStation, LocalTime.parse(departureTime), Station.eType.DEPARTURE);				//creates a new station--> departure
+		Station destination = new Station(destinationStation, LocalTime.parse(destinationTime), Station.eType.DESTINATION);		//creates a new station--> destination
 		
 		allRides[numOfRides++] = new Ride(departure, destination, numOfStations);		//creates & adding a new ride
 
@@ -49,24 +48,20 @@ public class SystemManagement {
 			allRides[i].sortByHour();		//sort all the intermediate station in all the rides
 	}
 	
-	public eReason checkHourInRange(LocalTime theTime, LocalTime timeRange, eType typeToCheck){
+	public eReason checkHourInRange(LocalTime theTime){
 		
-		if(typeToCheck.equals(eType.DEPARTURE)){		//only departure station..
-			if(timeRange.equals(theTime))				//checks if the sent time is before the departure station time
-				return eReason.SAME_TIME_AS_DEPARTURE;
-			if(timeRange.isAfter(theTime))	
-				return eReason.BEFORE_DEPARTURE_TIME;
-		}
+		if(allRides[numOfRides - 1].getDepartureStation().getTime().equals(theTime))				//checks if the sent time is equal to the departure station time
+			return eReason.SAME_TIME_AS_DEPARTURE;
+		if(allRides[numOfRides - 1].getDepartureStation().getTime().isAfter(theTime))				//checks if the sent time is before the departure station time
+			return eReason.BEFORE_DEPARTURE_TIME;
 		
-		if(typeToCheck.equals(eType.DESTINATION)){
-			if(timeRange.equals(theTime))	
-				return eReason.SAME_TIME_AS_DESTINATION;
-			if(timeRange.isBefore(theTime))
-				return eReason.AFTER_DESTINATION_TIME;
-		}
+		if(allRides[numOfRides - 1].getDestinationStation().getTime().equals(theTime))				//checks if the sent time is equal to the destination station time
+			return eReason.SAME_TIME_AS_DESTINATION;	
+		if(allRides[numOfRides - 1].getDestinationStation().getTime().isBefore(theTime))			//checks if the sent time is after the destination station time
+			return eReason.AFTER_DESTINATION_TIME;
 		
-		if(typeToCheck.equals(eType.INTERMEDIATE))
-			if(timeRange.equals(theTime))	
+		for(int i = 2 ; i < allRides[numOfRides - 1].getNumOfStations() ; i++ )						//loop runs only on the intermediate station in the ride
+			if(allRides[numOfRides - 1].getAllStations()[i].getTime().equals(theTime))				//checks if the sent time is equal to another intermediate station time
 				return eReason.SAME_TIME_AS_ANOTHER_INTERMEDIATE;
 			
 		return eReason.OK;

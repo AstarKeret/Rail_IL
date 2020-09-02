@@ -3,7 +3,6 @@ package rail_il;
 import java.time.LocalTime;
 import java.util.Scanner;
 
-import rail_il.SystemManagement.eReason;
 
 public class RailProgram {
 	public static final Scanner s = new Scanner(System.in);
@@ -44,17 +43,25 @@ public class RailProgram {
 	private static void getRideFromUser(SystemManagement rail) {
 		String tampDepTime, tampDesTime ,tampDepStation ,tampDesStation;
 		int numOfStops;	
+		boolean continueSign;
+		do{
+			continueSign = true;
+			System.out.println("Please enter departure station:");
+			s.nextLine();
+			tampDepStation = s.nextLine();
+			System.out.println("Please enter a departure time (in format HH:MM)");
+			tampDepTime = s.nextLine();
 		
-		System.out.println("Please enter departure station:");
-		s.nextLine();
-		tampDepStation = s.nextLine();
-		System.out.println("Please enter a departure time (in format HH:MM)");
-		tampDepTime = s.nextLine();
+			System.out.println("Please enter destination station:");
+			tampDesStation = s.nextLine();
+			System.out.println("Please enter a destination time (in format HH:MM)");
+			tampDesTime = s.nextLine();
 		
-		System.out.println("Please enter destination station:");
-		tampDesStation = s.nextLine();
-		System.out.println("Please enter a destination time (in format HH:MM)");
-		tampDesTime = s.nextLine();
+			if(LocalTime.parse(tampDepTime).isAfter(LocalTime.parse(tampDesTime))){		//checks if the destination station time is before departure destination time
+				System.out.println("The destination time you entered is erliar then the departure time you entered\nPlease enter the ride info again\n");
+				continueSign = false;	//loop start again if time not fine
+			}
+		}while(!continueSign);
 		
 		System.out.println("Do you want to add an intermediate stations? <y/n>");
 		int key = s.next().charAt(0);		//gets from the user if the ride has intermediate stations 

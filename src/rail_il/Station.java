@@ -41,8 +41,8 @@ public class Station {
 	}
 	
 	public String toString() {
-		return "\tStation Name: " + name + "\tStation Type: " + stationType + "\t\tTime: "
-	+ time;
+		return "\tStation Name: " + name +  "\t\tTime: " + time;
 	}	
+	//"\tStation Type: " + stationType +
 	
 }
