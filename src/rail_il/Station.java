@@ -1,8 +1,10 @@
 package rail_il;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
-public class Station {
+@SuppressWarnings("serial")
+public class Station implements Comparable<Station>, Serializable{
 
 	public static enum eType{DESTINATION, DEPARTURE, INTERMEDIATE}
 	
@@ -14,6 +16,14 @@ public class Station {
 		setName(name);
 		setStationType(stationType);
 		setTime(time);
+	}
+	
+	public Station() {
+		this(null, null, null);
+	}
+	
+	public Station(Station theStation) {
+		this(theStation.name, theStation.time, theStation.stationType);
 	}
 	
 	public String getName() {
@@ -39,10 +49,14 @@ public class Station {
 	public void setTime(LocalTime time) {
 		this.time = time;
 	}
+
+	@Override
+	public int compareTo(Station s) {
+		return time.compareTo(s.getTime());
+	}
 	
+	@Override
 	public String toString() {
-		return "\tStation Name: " + name +  "\t\tTime: " + time;
-	}	
-	//"\tStation Type: " + stationType +
-	
+		return "\tStation Name: " + name +  "\t\tTime: " + time + "\tStation Type: " + stationType ;
+	}
 }
