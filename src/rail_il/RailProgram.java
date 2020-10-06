@@ -22,18 +22,19 @@ public class RailProgram {
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
 		boolean fKeyOK = false;
-		int iKey;
+		int iKey = 0;
 		Managementable uiManager = new ConsoleUI();
 		ObjectInputStream inFile = new ObjectInputStream(new FileInputStream("rail.dat"));
 		uiManager.setAllRides((Set<Ride>)inFile.readObject());
 		inFile.close();
-
-		while(!fKeyOK) {
+	while(!fKeyOK) {
 			try {
 				do {
-					System.out.println("\tWellcom\n[1] Add new ride\n[2] Print all rides\n[3] Search\n[4] Save\n[9] Exit");//"menu"
-					uiCheck.getChoice(iKey = s.nextInt(), 4);
-					switch(iKey) {case 1:
+						System.out.println("\tWellcom\n[1] Add new ride\n[2] Print all rides\n[3] Search\n[4] Save\n[9] Exit");//"menu"
+						uiCheck.getChoice(iKey = s.nextInt(), 4);
+
+					switch(iKey) {
+					case 1:
 						getRideFromUser(uiManager);
 						break;
 					case 2:
@@ -55,9 +56,9 @@ public class RailProgram {
 						outFile9.close();
 						fKeyOK = true;
 						break;
-					}	
-					}while(iKey!= 9);
-				}
+					}
+				}while(iKey!= 9);
+			}
 			catch(YesOrNoException e) {
 					System.out.println(e.getMessage());
 			}
@@ -70,6 +71,8 @@ public class RailProgram {
 			}
 		}
 	}//end main
+	
+
 	
 	private static void getSearchDetails(Managementable uiManager) {
 		
