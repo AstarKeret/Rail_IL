@@ -18,21 +18,33 @@ public class UserSearch {
 		uiManager.setAllRides((Set<Ride>)inFile.readObject());
 		inFile.close();
 
-
-		SearchRideByUser(uiManager, args[0], args[1], args[2], args[3]);
-
+		String time = args[1] + ":" + args[2];
+		uiManager.searchRide(args[0], LocalTime.parse(time), args[3]);
+		
+		if(args[4].equalsIgnoreCase("html"))
+				SearchRideByUserHTML(uiManager.getSearchResult());
+		else
+			SearchRideByUser(uiManager);
 	}
 	
 	public static void SearchRideByUser(Managementable uiManager, String departureStation, String hour, String minute, String destinationStation ){
 		
-		String time = hour + ":" + minute;
-		uiManager.searchRide(departureStation, LocalTime.parse(time), destinationStation);
+	}
+	
+
+	public static void SearchRideByUserHTML(Ride[] searchResult){
+		
 		System.out.print("<h2 style='text-align: center;'><span style='color: #ff6600;'>search result</span></h2><p>&nbsp;</p>");//search result
 		
-		for(int i = 0 ; i < uiManager.getNumOfResult() ; i++){
+		if(searchResult[0] == null ){
+			System.out.print("<p style='text-align: center;'><img src='https://html-online.com/editor/tinymce4_6_5/plugins/emoticons/img/smiley-frown.gif' alt='frown' />We didn't find a trip that matches your search<img src='https://html-online.com/editor/tinymce4_6_5/plugins/emoticons/img/smiley-frown.gif' alt='frown' /></p>");
+			return;
+		}
+		
+		for(int i = 0 ; i < searchResult.length ; i++){
 			
 			System.out.print("<h3 style='text-align: left;'>&nbsp;<span style='text-decoration: underline;'><span style='color: #ff0000; text-decoration: underline;'>Ride Number " + (i+1) + "</span></span> </h3>");
-			Iterator<Station> itr = uiManager.getSearchResult()[i].getAllStations().iterator(); 
+			Iterator<Station> itr = searchResult[i].getAllStations().iterator(); 
 			System.out.print("<table style='height: 33px;' width='575'><tbody><tr>");
 			System.out.print("<td style='width: 184.333px; text-align: center;'><h3><strong>Time</strong></h3></td>");
 			System.out.print("<td style='width: 184.333px; text-align: center;'><h3><strong>Station Name</strong></h3></td>");
@@ -51,6 +63,15 @@ public class UserSearch {
 			System.out.print("</tr></tbody></table><p>&nbsp;</p>");
 			}		
 	}
+	
+	public static void SearchRideByUser(Managementable uiManager){
+		
+		
+		System.out.println("We found " + uiManager.getNumOfResult() + " rides that matching your search..");
+		
+		for(int i = 0 ; i < uiManager.getNumOfResult() ; i++)
+			System.out.println("\nRide #" + (i+1) + ":\n" + uiManager.getSearchResult()[i].toString());
+		
+	}
 
-	//add not fined result
 }
