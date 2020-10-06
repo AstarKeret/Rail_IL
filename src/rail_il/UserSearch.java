@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.time.LocalTime;
+import java.util.Iterator;
 import java.util.Set;
 
 public class UserSearch {
@@ -17,22 +18,39 @@ public class UserSearch {
 		uiManager.setAllRides((Set<Ride>)inFile.readObject());
 		inFile.close();
 
-		String time = args[1] + ":" + args[2];
-		System.out.println(time + "\n");
-	
-//		SearchRideByUser(uiManager, args[0], args[1], args[2], args[3]);
+
+		SearchRideByUser(uiManager, args[0], args[1], args[2], args[3]);
 
 	}
 	
 	public static void SearchRideByUser(Managementable uiManager, String departureStation, String hour, String minute, String destinationStation ){
 		
 		String time = hour + ":" + minute;
-		System.out.println(time + "\n");
 		uiManager.searchRide(departureStation, LocalTime.parse(time), destinationStation);
-		System.out.println("We found " + uiManager.getNumOfResult() + " rides that matching your search..");
+		System.out.print("<h2 style='text-align: center;'><span style='color: #ff6600;'>search result</span></h2><p>&nbsp;</p>");//search result
 		
-		for(int i = 0 ; i < uiManager.getNumOfResult() ; i++)
-			System.out.println("\nRide #" + (i+1) + ":\n" + uiManager.getSearchResult()[i].toString());
+		for(int i = 0 ; i < uiManager.getNumOfResult() ; i++){
+			
+			System.out.print("<h3 style='text-align: left;'>&nbsp;<span style='text-decoration: underline;'><span style='color: #ff0000; text-decoration: underline;'>Ride Number " + (i+1) + "</span></span> </h3>");
+			Iterator<Station> itr = uiManager.getSearchResult()[i].getAllStations().iterator(); 
+			System.out.print("<table style='height: 33px;' width='575'><tbody><tr>");
+			System.out.print("<td style='width: 184.333px; text-align: center;'><h3><strong>Time</strong></h3></td>");
+			System.out.print("<td style='width: 184.333px; text-align: center;'><h3><strong>Station Name</strong></h3></td>");
+			System.out.print("<td style='width: 184.333px; text-align: center;'><h3><strong>Type</strong></h3></td></tr>");
+			
+			while(itr.hasNext()){
+				Station temp = itr.next();
+					if(temp.getStationType().equals(Station.eType.DESTINATION))
+					System.out.print("<tr><td style='width: 184.333px; text-align: center;'><p>" + temp.getTime() + " (arrivel)<p></td>");
+				else
+					System.out.print("<tr><td style='width: 184.333px; text-align: center;'><p>" + temp.getTime() + "<p></td>");
+				System.out.print("<td style='width: 184.333px; text-align: center;'><p>" + temp.getName() + "<p></td>");
+				System.out.print("<td style='width: 184.333px; text-align: center;'><p>" + temp.getStationType().toString() + "<p></td>");
+				}
+			
+			System.out.print("</tr></tbody></table><p>&nbsp;</p>");
+			}		
 	}
 
+	//add not fined result
 }
