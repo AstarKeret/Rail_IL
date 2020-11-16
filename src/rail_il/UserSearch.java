@@ -14,10 +14,9 @@ public class UserSearch {
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
 		Managementable uiManager = new ConsoleUI();
-		ObjectInputStream inFile = new ObjectInputStream(new FileInputStream("/home/afeka/workspace/Rail_IL/rail.dat"));
+		ObjectInputStream inFile = new ObjectInputStream(new FileInputStream("/home/afeka/eclipse-workspace/Rail_IL/rail.dat"));
 		uiManager.setAllRides((Set<Ride>)inFile.readObject());
 		inFile.close();
-
 		String time = args[1] + ":" + args[2];
 		uiManager.searchRide(args[0], LocalTime.parse(time), args[3]);
 		
@@ -25,10 +24,6 @@ public class UserSearch {
 				SearchRideByUserHTML(uiManager.getSearchResult());
 		else
 			SearchRideByUser(uiManager);
-	}
-	
-	public static void SearchRideByUser(Managementable uiManager, String departureStation, String hour, String minute, String destinationStation ){
-		
 	}
 	
 
@@ -42,7 +37,8 @@ public class UserSearch {
 		}
 		
 		for(int i = 0 ; i < searchResult.length ; i++){
-			
+			if(searchResult[i] == null)
+				break;
 			System.out.print("<h3 style='text-align: left;'>&nbsp;<span style='text-decoration: underline;'><span style='color: #ff0000; text-decoration: underline;'>Ride Number " + (i+1) + "</span></span> </h3>");
 			Iterator<Station> itr = searchResult[i].getAllStations().iterator(); 
 			System.out.print("<table style='height: 33px;' width='575'><tbody><tr>");
@@ -61,9 +57,8 @@ public class UserSearch {
 				}
 			
 			System.out.print("</tr></tbody></table><p>&nbsp;</p>");
-			}		
+		}
 	}
-	
 	public static void SearchRideByUser(Managementable uiManager){
 		
 		

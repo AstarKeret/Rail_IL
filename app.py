@@ -28,7 +28,7 @@ def rail_schedule():
     if 'departure' in request.args:
         departure = request.args.get('departure')
 
-    return subprocess.check_output(["java", "-classpath", "/home/afeka/workspace/Rail_IL/bin",
+    return subprocess.check_output(["java", "-classpath", "/home/afeka/eclipse-workspace/Rail_IL/bin",
                                     "rail_il.UserSearch", departure, hour, minute, destination, outformat])
 
 if __name__ == '__main__':
