@@ -4,5 +4,7 @@ The program looks for travel based on data entered by the user: point of departu
 The UserSearch class contain a code in HTML- written as an output string, This output shows the travel search results.
 The connection to the server was though Flask (Python web framework). The app.py file contain the flask web server code, adjusted to this rail program.
 
+Search Result:  [Result](image/searchResult.png)
 
+No Result:  [Not found](image/noSearchResult.png)
 
