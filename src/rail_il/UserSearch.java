@@ -14,7 +14,7 @@ public class UserSearch {
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
 		Managementable uiManager = new ConsoleUI();
-		ObjectInputStream inFile = new ObjectInputStream(new FileInputStream("/home/afeka/eclipse-workspace/Rail_IL/rail.dat"));
+		ObjectInputStream inFile = new ObjectInputStream(new FileInputStream("/Rail_IL/rail.dat"));
 		uiManager.setAllRides((Set<Ride>)inFile.readObject());
 		inFile.close();
 		String time = args[1] + ":" + args[2];
